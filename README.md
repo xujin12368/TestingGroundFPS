@@ -1,4 +1,4 @@
-# Testing Grounding FPS
+# Testing Ground FPS
 ## 1. 概念
 - 玩家作为一个娱乐游戏的参赛者  
 - 尽可能的在更多的TestingGronds生存  
