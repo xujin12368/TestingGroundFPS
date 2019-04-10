@@ -4,30 +4,40 @@
 #include "ChooseNextWaypoint.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree//BlackboardComponent.h"
+#include "AIController.h"
+#include "TP_ThirdPerson/PatrollingGuard.h"
 
 EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	auto BlackboardComp = OwnerComp.GetBlackboardComponent();
-	auto IndexValue = BlackboardComp->GetValueAsInt(Index.SelectedKeyName);
+	BlackboardComp = OwnerComp.GetBlackboardComponent();
+	IndexValue = BlackboardComp->GetValueAsInt(Index.SelectedKeyName);
+	
+	auto AIController = OwnerComp.GetAIOwner();
+	ControlledPawn = AIController->GetPawn();
+	if (!ensure(ControlledPawn)) { return EBTNodeResult::Failed; }
 
+	GetPatrolPoints();
+	SetPatrolPoints();
+	CycleIndex();
 
-	UE_LOG(LogTemp, Warning, TEXT("C++ BTNode Runing. %i"),IndexValue);
 
 	return EBTNodeResult::Succeeded;
 }
 
 void UChooseNextWaypoint::GetPatrolPoints()
 {
-
+	auto PatrollingGuard = Cast<APatrollingGuard>(ControlledPawn);
+	PatrolPoints = PatrollingGuard->PatrolPoints;
 }
 
-int32 UChooseNextWaypoint::SetPatrolPoints()
+void UChooseNextWaypoint::SetPatrolPoints()
 {
-	return 0;
+	BlackboardComp->SetValueAsObject(Waypoint.SelectedKeyName, PatrolPoints[IndexValue]);
 }
 
-void UChooseNextWaypoint::CycleIndex(int32 Index)
+void UChooseNextWaypoint::CycleIndex()
 {
-
+	IndexValue++;
+	BlackboardComp->SetValueAsInt(Index.SelectedKeyName, IndexValue % PatrolPoints.Num());
 }
 

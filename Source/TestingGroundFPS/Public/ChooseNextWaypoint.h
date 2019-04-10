@@ -20,11 +20,22 @@ public:
 private:
 	void GetPatrolPoints();
 
-	int32 SetPatrolPoints();
+	void SetPatrolPoints();
 
-	void CycleIndex(int32 Index);
+	void CycleIndex();
 
 	UPROPERTY(EditAnywhere, Category = "Blackboard")
 	struct FBlackboardKeySelector Index;
+
+	UPROPERTY(EditAnywhere, Category = "Blackboard")
+	struct FBlackboardKeySelector Waypoint;
+
+	UBlackboardComponent* BlackboardComp = nullptr;
+
+	APawn* ControlledPawn = nullptr;
+
+	TArray<AActor*> PatrolPoints;
+
+	int32 IndexValue = 0;
 	
 };
