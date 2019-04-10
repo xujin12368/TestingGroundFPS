@@ -29,6 +29,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
 	float BaseLookUpRate;
 
+	UPROPERTY(EditAnywhere, Category = "Setup")
+	TArray<AActor*> PatrolPoints;
+
 protected:
 
 	/** Resets HMD orientation in VR. */
