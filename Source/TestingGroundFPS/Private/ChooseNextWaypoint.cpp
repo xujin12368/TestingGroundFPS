@@ -5,29 +5,33 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree//BlackboardComponent.h"
 #include "AIController.h"
-#include "TP_ThirdPerson/PatrollingGuard.h"
+#include "PatrolRoute.h"
 
 EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	BlackboardComp = OwnerComp.GetBlackboardComponent();
 	IndexValue = BlackboardComp->GetValueAsInt(Index.SelectedKeyName);
 	
-	auto AIController = OwnerComp.GetAIOwner();
-	ControlledPawn = AIController->GetPawn();
+	ControlledPawn = OwnerComp.GetAIOwner()->GetPawn();
 	if (!ensure(ControlledPawn)) { return EBTNodeResult::Failed; }
 
 	GetPatrolPoints();
 	SetPatrolPoints();
 	CycleIndex();
 
-
 	return EBTNodeResult::Succeeded;
 }
 
 void UChooseNextWaypoint::GetPatrolPoints()
 {
-	auto PatrollingGuard = Cast<APatrollingGuard>(ControlledPawn);
-	PatrolPoints = PatrollingGuard->PatrolPoints;
+	auto PatrolRoute = ControlledPawn->FindComponentByClass<UPatrolRoute>();
+	if (!ensure(PatrolRoute)) { return; }
+
+	PatrolPoints = PatrolRoute->GetPatrolPoints();
+	if (0 == PatrolPoints.Num())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s has missed its patrol points."), *ControlledPawn->GetName());
+	}
 }
 
 void UChooseNextWaypoint::SetPatrolPoints()
@@ -38,6 +42,7 @@ void UChooseNextWaypoint::SetPatrolPoints()
 void UChooseNextWaypoint::CycleIndex()
 {
 	IndexValue++;
-	BlackboardComp->SetValueAsInt(Index.SelectedKeyName, IndexValue % PatrolPoints.Num());
+	auto NextIndex = IndexValue % PatrolPoints.Num(); // 用变量存储会让代码逻辑更加清晰，让看代码的人知道这是个啥
+	BlackboardComp->SetValueAsInt(Index.SelectedKeyName, NextIndex);
 }
 
