@@ -23,5 +23,8 @@ private:
 	int32 SetPatrolPoints();
 
 	void CycleIndex(int32 Index);
+
+	UPROPERTY(EditAnywhere, Category = "Blackboard")
+	struct FBlackboardKeySelector Index;
 	
 };

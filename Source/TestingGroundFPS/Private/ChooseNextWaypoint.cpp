@@ -3,13 +3,15 @@
 
 #include "ChooseNextWaypoint.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
-#include "Gameframework/Pawn.h"
+#include "BehaviorTree//BlackboardComponent.h"
 
 EBTNodeResult::Type UChooseNextWaypoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	// Super::ExecuteTask(OwnerComp, NodeMemory); //是否需要这个呢
-	UE_LOG(LogTemp, Warning, TEXT("C++ BTNode Runing."));
-	
+	auto BlackboardComp = OwnerComp.GetBlackboardComponent();
+	auto IndexValue = BlackboardComp->GetValueAsInt(Index.SelectedKeyName);
+
+
+	UE_LOG(LogTemp, Warning, TEXT("C++ BTNode Runing. %i"),IndexValue);
 
 	return EBTNodeResult::Succeeded;
 }
