@@ -7,7 +7,10 @@
 		{
 			"Name": "TestingGroundFPS",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"AIModule"
+			]
 		}
 	]
 }
