@@ -24,6 +24,9 @@ EBTNodeResult::Type UFocusAtPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	FVector PointValue = BlackboardComp->GetValueAsVector(Point.SelectedKeyName);
 
 	Controller->SetFocalPoint(PointValue);
+	// Controller->K2_SetFocalPoint(PointValue);
+
+	UE_LOG(LogTemp, Warning, TEXT("Player Location : %s "), *PointValue.ToString());
 
 	return EBTNodeResult::Succeeded;
 }

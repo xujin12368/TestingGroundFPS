@@ -27,10 +27,11 @@ void UChooseNextWaypoint::GetPatrolPoints()
 	auto PatrolRoute = ControlledPawn->FindComponentByClass<UPatrolRoute>();
 	if (!ensure(PatrolRoute)) { return; }
 
-	PatrolPoints = PatrolRoute->GetPatrolPoints();
+	PatrolPoints = PatrolRoute->GetPatrolPoints(); // TODO  防止程序在此处崩溃（TArry为空的情况）
 	if (0 == PatrolPoints.Num())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s has missed its patrol points."), *ControlledPawn->GetName());
+		return;
 	}
 }
 
