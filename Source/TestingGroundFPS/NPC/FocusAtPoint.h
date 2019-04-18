@@ -17,5 +17,8 @@ class TESTINGGROUNDFPS_API UFocusAtPoint : public UBTTaskNode
 public:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
-	
+private:
+	UPROPERTY(EditAnywhere, Category = "Blackboard")
+	struct FBlackboardKeySelector EnemyKey;
+
 };

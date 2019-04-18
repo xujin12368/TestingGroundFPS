@@ -11,12 +11,13 @@ EBTNodeResult::Type UFocusAtPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 {
 	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
 	AAIController* Controller = OwnerComp.GetAIOwner();
-
 	if (!ensure(BlackboardComp && Controller)) { return EBTNodeResult::Failed; }
 
 	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
-
 	if (!ensure(PlayerPawn)) { return EBTNodeResult::Failed; }
+
+	//For MoveTo Task using.
+	BlackboardComp->SetValueAsObject(EnemyKey.SelectedKeyName, PlayerPawn);
 
 	// Controller->SetFocalPoint(PointValue);
 	Controller->SetFocus(PlayerPawn);
