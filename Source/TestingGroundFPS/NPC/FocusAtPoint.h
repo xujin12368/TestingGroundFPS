@@ -7,7 +7,7 @@
 #include "FocusAtPoint.generated.h"
 
 /**
- * 
+ * Focus At Actor , Not Point Now! It's a mistake TaskName.
  */
 UCLASS()
 class TESTINGGROUNDFPS_API UFocusAtPoint : public UBTTaskNode
@@ -17,8 +17,5 @@ class TESTINGGROUNDFPS_API UFocusAtPoint : public UBTTaskNode
 public:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 
-private:
-	UPROPERTY(EditAnywhere, Category = "Blackboard")
-	struct FBlackboardKeySelector Point;
 	
 };

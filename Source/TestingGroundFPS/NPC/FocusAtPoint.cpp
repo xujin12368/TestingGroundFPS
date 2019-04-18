@@ -5,7 +5,6 @@
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree//BlackboardComponent.h"
 #include "AIController.h"
-#include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 
 EBTNodeResult::Type UFocusAtPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
@@ -15,18 +14,12 @@ EBTNodeResult::Type UFocusAtPoint::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 
 	if (!ensure(BlackboardComp && Controller)) { return EBTNodeResult::Failed; }
 
-	FVector PlayerLocation = GetWorld()->GetFirstPlayerController()->GetPawn()->GetActorLocation();
+	APawn* PlayerPawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 
-	//Set
-	BlackboardComp->SetValueAsVector(Point.SelectedKeyName, PlayerLocation);
+	if (!ensure(PlayerPawn)) { return EBTNodeResult::Failed; }
 
-	//Get
-	FVector PointValue = BlackboardComp->GetValueAsVector(Point.SelectedKeyName);
-
-	Controller->SetFocalPoint(PointValue);
-	// Controller->K2_SetFocalPoint(PointValue);
-
-	UE_LOG(LogTemp, Warning, TEXT("Player Location : %s "), *PointValue.ToString());
+	// Controller->SetFocalPoint(PointValue);
+	Controller->SetFocus(PlayerPawn);
 
 	return EBTNodeResult::Succeeded;
 }
